@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        mvn "Maven3"
+        maven "Maven3"
     }
     
     environment {
@@ -20,7 +20,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Get the code from SCM (e.g., GitHub, Bitbucket)
-                git branch: 'main', credentialsId: 'github_credentials', url: 'https://github.com/MedEzzedine/Kanban-Backend'
+                cleanWs()
+                checkout scm
+                //git branch: 'main', credentialsId: 'github_credentials', url: 'https://github.com/MedEzzedine/Kanban-Backend'
             }
         }
 
