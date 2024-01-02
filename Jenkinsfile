@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        mvn "Maven3"
+    }
+    
     environment {
         // Define environment variables
         NEXUS_VERSION = '1.0.0'
