@@ -3,6 +3,7 @@ pipeline {
 
     tools {
         maven "Maven3"
+        jdk "jdk17"
     }
     
     environment {
@@ -26,11 +27,18 @@ pipeline {
             }
         }
 
-        stage('Compile and Unit Test') {
+        stage('Unit Test') {
             steps {
                 script {
-                    // Run Maven build
-                    sh 'mvn clean compile test'
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Package JAR') {
+            steps {
+                script {
+                    sh 'mvn clean package'
                 }
             }
         }
