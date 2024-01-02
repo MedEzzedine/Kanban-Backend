@@ -20,7 +20,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Get the code from SCM (e.g., GitHub, Bitbucket)
-                checkout scm
+                git branch: 'main', credentialsId: 'github_credentials', url: 'https://github.com/MedEzzedine/Kanban-Backend'
             }
         }
 
