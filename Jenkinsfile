@@ -20,7 +20,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Get the code from SCM (e.g., GitHub, Bitbucket)
-                cleanWs()
                 checkout scm
             }
         }
