@@ -14,7 +14,7 @@ pipeline {
         NEXUS_CREDENTIALS_ID = 'nexus-credentials' // Jenkins credentials ID for Nexus
         DOCKERHUB_CREDENTIALS_ID = 'dockerhub-credentials' // Jenkins credentials ID for DockerHub
         DOCKER_IMAGE = 'yourdockerhubuser/yourimage'
-        SONARQUBE_SERVER = 'http://localhost:9000'
+        SONARQUBE_SERVER = 'http://sonarqube:9000'
     }
 
     stages {
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv(credentialsId: 'sonarqube_token') {
-                        sh "mvn sonar:sonar"
+                        sh "mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_SERVER}"
                     }
                 }
             }
