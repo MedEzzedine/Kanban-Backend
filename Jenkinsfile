@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv(credentialsId: 'sonarqube_token') {
-                        sh "mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_SERVER}"
+                        sh "mvn sonar:sonar"
                     }
                 }
             }
