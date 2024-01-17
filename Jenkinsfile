@@ -8,7 +8,7 @@ pipeline {
     
     environment {
         // Define environment variables
-        NEXUS_VERSION = '1.0.0'
+        NEXUS_VERSION = 'nexus3'
         NEXUS_REPOSITORY = 'devops-repo'
         NEXUS_URL = 'localhost:8081'
         NEXUS_PROTOCOL = 'http'
