@@ -9,8 +9,8 @@ pipeline {
     environment {
         // Define environment variables
         NEXUS_VERSION = '1.0.0'
-        NEXUS_REPOSITORY = 'KanbanApp'
-        NEXUS_URL = 'http://localhost:8081/'
+        NEXUS_REPOSITORY = 'maven-releases'
+        NEXUS_URL = 'http://localhost:8081'
         NEXUS_PROTOCOL = 'http'
         NEXUS_CREDENTIAL_ID = 'nexus_credentials' // Jenkins credentials ID for Nexus
         //DOCKERHUB_CREDENTIALS_ID = 'dockerhub-credentials' // Jenkins credentials ID for DockerHub
