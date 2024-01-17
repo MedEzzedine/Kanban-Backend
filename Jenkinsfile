@@ -11,7 +11,8 @@ pipeline {
         NEXUS_VERSION = '1.0.0'
         NEXUS_REPOSITORY = 'KanbanApp'
         NEXUS_URL = 'http://localhost:8081/'
-        NEXUS_CREDENTIALS_ID = 'nexus_credentials' // Jenkins credentials ID for Nexus
+        NEXUS_PROTOCOL = 'http'
+        NEXUS_CREDENTIAL_ID = 'nexus_credentials' // Jenkins credentials ID for Nexus
         //DOCKERHUB_CREDENTIALS_ID = 'dockerhub-credentials' // Jenkins credentials ID for DockerHub
         //DOCKER_IMAGE = 'yourdockerhubuser/yourimage'
         //SONARQUBE_SERVER = 'http://sonarqube:9000'
@@ -67,7 +68,7 @@ pipeline {
                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
                         nexusArtifactUploader(
                             nexusVersion: NEXUS_VERSION,
-                            //protocol: NEXUS_PROTOCOL,
+                            protocol: NEXUS_PROTOCOL,
                             nexusUrl: NEXUS_URL,
                             groupId: pom.groupId,
                             version: pom.version,
