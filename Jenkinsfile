@@ -9,7 +9,7 @@ pipeline {
     environment {
         // Define environment variables
         NEXUS_VERSION = 'nexus3'
-        NEXUS_REPOSITORY = 'devops-repo'
+        NEXUS_REPOSITORY = 'kanban-backend'
         NEXUS_URL = 'nexus:8081'
         NEXUS_PROTOCOL = 'http'
         NEXUS_CREDENTIAL_ID = 'nexus_credentials' // Jenkins credentials ID for Nexus
@@ -56,7 +56,7 @@ pipeline {
 
 
 
-        stage("Publish to Nexus Repository Manager") {
+        stage("Publish to Nexus") {
             steps {
                 script {
                     pom = readMavenPom file: "pom.xml";
