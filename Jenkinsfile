@@ -96,10 +96,9 @@ pipeline {
             steps {
                 script {
 
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS_ID) {
+                    docker.withRegistry('https://registry.hub.docker.com/v2/', DOCKERHUB_CREDENTIALS_ID) {
                         sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
                         sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
-                        sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:latest"
                     }
                 }
             }
