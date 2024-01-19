@@ -96,10 +96,14 @@ pipeline {
             steps {
                 script {
 
-                    docker.withRegistry('https://registry.hub.docker.com/v2/', DOCKERHUB_CREDENTIALS_ID) {
+                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                         sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
                         sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
                     }
+                    // docker.withRegistry('https://registry.hub.docker.com/v2/', DOCKERHUB_CREDENTIALS_ID) {
+                        
+                    // }
                 }
             }
         }
