@@ -12,10 +12,10 @@ pipeline {
         NEXUS_REPOSITORY = 'kanban-backend'
         NEXUS_URL = 'nexus:8081'
         NEXUS_PROTOCOL = 'http'
-        NEXUS_CREDENTIAL_ID = 'nexus_credentials' // Jenkins credentials ID for Nexus
-        //DOCKERHUB_CREDENTIALS_ID = 'dockerhub-credentials' // Jenkins credentials ID for DockerHub
-        //DOCKER_IMAGE = 'yourdockerhubuser/yourimage'
-        //SONARQUBE_SERVER = 'http://sonarqube:9000'
+        NEXUS_CREDENTIAL_ID = 'nexus_credentials'
+        DOCKERHUB_CREDENTIALS_ID = 'dockerhub_credentials'
+
+        BACKEND_IMAGE_NAME = 'kanban-backend'
     }
 
     stages {
@@ -71,7 +71,7 @@ pipeline {
                             protocol: NEXUS_PROTOCOL,
                             nexusUrl: NEXUS_URL,
                             groupId: pom.groupId,
-                            version: pom.version,
+                            version: BUILD_NUMBER,
                             repository: NEXUS_REPOSITORY,
                             credentialsId: NEXUS_CREDENTIAL_ID,
                             artifacts: [
@@ -91,15 +91,7 @@ pipeline {
                 }
             }
         }
-/*        
-         stage('Publish to Nexus') {
-            steps {
-                script {
-                    // Publish artifact to Nexus
-                    sh "mvn deploy:deploy-file -Durl=${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/ -DrepositoryId=${NEXUS_CREDENTIALS_ID} -Dfile=target/your-artifact-${NEXUS_VERSION}.jar -DgroupId=your.group -DartifactId=your-artifact -Dversion=${NEXUS_VERSION} -Dpackaging=jar"
-                }
-            }
-        }
+
 
         stage('Build and Push Docker Image') {
             steps {
@@ -109,20 +101,21 @@ pipeline {
                         sh "echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin"
                     }
 
-                    // Build Docker image
-                    sh "docker build -t ${DOCKER_IMAGE}:${NEXUS_VERSION} ."
+                    sh "docker build -t ${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
 
-                    // Push Docker image to DockerHub
-                    sh "docker push ${DOCKER_IMAGE}:${NEXUS_VERSION}"
+                    sh "docker push ${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
                 }
             }
-        } */
+        }
     }
 
     post {
         always {
             // Actions to perform after the pipeline completes
-            echo 'Pipeline execution complete!'
+            script {
+                sh docker logout
+                echo 'Pipeline execution complete!'
+            }
         }
     }
 }
