@@ -103,6 +103,7 @@ pipeline {
                 script {
                     sh "docker compose -p 'kanban' down || echo 'project kanban not running'"
                     sh "docker compose -p 'kanban' up -d --build"
+                    slackSend color: "good", message: "Backend deployed Successfully!"
                 }
             }
         }
@@ -110,11 +111,15 @@ pipeline {
 
     post {
         always {
-            // Actions to perform after the pipeline completes
+            
             script {
                 sh "docker logout"
                 echo 'Pipeline execution complete!'
             }
+        }
+        
+        failure {
+            slackSend color: "danger", message: "Backend pipeline failed."
         }
     }
 }
