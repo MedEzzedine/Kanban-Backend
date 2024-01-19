@@ -18,13 +18,13 @@ pipeline {
         BACKEND_IMAGE_NAME = 'kanban-backend'
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                cleanWs()
-                checkout scm
-            }
-        }
+    // stages {
+    //     stage('Checkout') {
+    //         steps {
+    //             cleanWs()
+    //             checkout scm
+    //         }
+    //     }
 
         stage('Unit Test') {
             steps {
