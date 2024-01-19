@@ -101,7 +101,7 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    sh "docker compose -p 'kanban' down | echo 'project kanban not running'"
+                    sh "docker compose -p 'kanban' down || echo 'project kanban not running'"
                     sh "docker compose -p 'kanban' up -d --build"
                 }
             }
