@@ -21,10 +21,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Get the code from SCM (e.g., GitHub, Bitbucket)
                 cleanWs()
                 checkout scm
-                //git branch: 'main', credentialsId: 'github_credentials', url: 'https://github.com/MedEzzedine/Kanban-Backend'
             }
         }
 
@@ -101,9 +99,17 @@ pipeline {
                         sh "echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin"
                     }
 
-                    sh "docker build -t ${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
+                    sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
 
-                    sh "docker push ${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
+                    sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
+                }
+            }
+        }
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                script {
+                    docker compose -f "docker-compose.yml" up --build
                 }
             }
         }
