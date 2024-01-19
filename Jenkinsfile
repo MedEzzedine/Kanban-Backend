@@ -119,7 +119,7 @@ pipeline {
         always {
             // Actions to perform after the pipeline completes
             script {
-                sh docker logout
+                sh "docker logout"
                 echo 'Pipeline execution complete!'
             }
         }
