@@ -16,6 +16,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS_ID = 'dockerhub_credentials'
 
         BACKEND_IMAGE_NAME = 'kanban-backend'
+        DOCKERHUB_USER = 'medez'
     }
 
     stages {
@@ -94,14 +95,12 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    // Login to DockerHub
-                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS_ID, usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
-                        sh "echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin"
+
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS_ID) {
+                        sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
+                        sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
+                        sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:latest"
                     }
-
-                    sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
-
-                    sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
                 }
             }
         }
@@ -109,7 +108,7 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    docker compose -f "docker-compose.yml" up --build
+                    sh "docker compose -f 'docker-compose.yml' up --build"
                 }
             }
         }
