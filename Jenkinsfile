@@ -99,11 +99,9 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                         sh "docker build -t ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ."
-                        sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER}"
+                        sh "docker tag ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:${BUILD_NUMBER} ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:latest"
+                        sh "docker push ${DOCKERHUB_USER}/${BACKEND_IMAGE_NAME}:latest"
                     }
-                    // docker.withRegistry('https://registry.hub.docker.com/v2/', DOCKERHUB_CREDENTIALS_ID) {
-                        
-                    // }
                 }
             }
         }
@@ -111,7 +109,7 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    sh "docker compose -f 'docker-compose.yml' up --build"
+                    sh "docker compose -f docker-compose.yml up --build"
                 }
             }
         }
