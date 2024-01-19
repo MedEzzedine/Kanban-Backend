@@ -20,12 +20,6 @@ pipeline {
     }
 
     stages {
-        // stage('Checkout') {
-        //     steps {
-        //         cleanWs()
-        //         checkout scm
-        //     }
-        // }
 
         stage('Unit Test') {
             steps {
@@ -52,8 +46,6 @@ pipeline {
                 }
             }
         }
-
-
 
         stage("Publish to Nexus") {
             steps {
@@ -110,7 +102,7 @@ pipeline {
             steps {
                 script {
                     sh "docker compose -p 'kanban' down | echo 'project kanban not running'"
-                    sh "docker compose -d -f docker-compose.yml -p 'kanban' up --build"
+                    sh "docker compose -p 'kanban' up -d --build"
                 }
             }
         }
